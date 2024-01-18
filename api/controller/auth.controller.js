@@ -24,7 +24,7 @@ export const signin = async (req, res, next) => {
     try {
         const validUser = await User.findOne({ email })
         if (!validUser) {
-            return next(errorHandler(404, "User not found"))
+            return next(errorHandler(404, "Wrong credentials"))
         }
         const validPassword = await bcrypt.compare(password, validUser.password)
         if (!validPassword) {
@@ -34,7 +34,7 @@ export const signin = async (req, res, next) => {
         const token = jwt.sign({ id: validUser._id }, process.env.JWT_SECRET)
         return res.cookie('access_token', token, {
             httpOnly: true
-        }).status(200).send({rest})
+        }).status(200).send({success:true, rest})
 
     } catch (error) {
         next(error)
