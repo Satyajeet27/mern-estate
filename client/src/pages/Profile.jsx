@@ -7,7 +7,7 @@ import {
   uploadBytesResumable,
 } from "firebase/storage";
 import { app } from "../firbase";
-import { updateUserFailure, updateUserStart, updateUserSuccess } from "../redux/user/userSlice";
+import { deleteUserFailure, deleteUserStart, deleteUserSuccess, updateUserFailure, updateUserStart, updateUserSuccess } from "../redux/user/userSlice";
 
 const Profile = () => {
   const { currentUser, loading, error } = useSelector((state) => state.user);
@@ -64,17 +64,33 @@ const Profile = () => {
         body:JSON.stringify(formData)
       })
       const data= await res.json()
-      console.log(data)
+      // console.log(data)
       if(!data?.success){
         dispatch(updateUserFailure(data.message))
         return
       }
-      console.log(data)
+      // console.log(data)
       dispatch(updateUserSuccess(data.userData))
       setUpdateSuccess(true)
       return
     } catch (error) {
       dispatch(updateUserFailure(error.message))
+    }
+  }
+  const handleDeleteUser= async(e)=>{
+    try {
+      dispatch(deleteUserStart())
+      const res= await fetch(`/api/user/delete/${currentUser._id}`,{
+        method:"DELETE"
+      })
+      const data= await res.json()
+      if(!data.success){
+        return dispatch(deleteUserFailure(data.message))
+      }
+      dispatch(deleteUserSuccess())
+      
+    } catch (error) {
+      dispatch(deleteUserFailure(error.message))
     }
   }
   return (
@@ -133,7 +149,7 @@ const Profile = () => {
         </button>
       </form>
       <div className="flex justify-between mt-5">
-        <span className="text-red-700 cursor-pointer">Delete account</span>
+        <span onClick={handleDeleteUser} className="text-red-700 cursor-pointer">Delete account</span>
         <span className="text-red-700 cursor-pointer">Sign out</span>
       </div>
       <p className="text-red-700 mt-5">{error && error}</p>
