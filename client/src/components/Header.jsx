@@ -4,7 +4,7 @@ import { Link, NavLink } from "react-router-dom";
 
 const Header = () => {
   const {currentUser}= useSelector(state=>state.user)
-  console.log(currentUser)
+  console.log(currentUser.avatar)
   return (
     <header className="bg-slate-200 shadow-md">
       <div className="flex justify-between items-center max-w-6xl mx-auto p-3">
@@ -28,7 +28,7 @@ const Header = () => {
         {
           currentUser?
           <Link to={"/profile"}>
-            <img className="rounded-full h-7 w-7 object-cover" src={currentUser.avatar} alt="profile" />
+            <img className="rounded-full h-7 w-7 object-cover" src={currentUser?.avatar} alt="profile" />
           </Link>
 
           :
