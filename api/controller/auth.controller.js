@@ -52,11 +52,12 @@ export const google = async (req, res, next) => {
         }
         const generatePassword = Math.random().toString(36).slice(-8) + Math.random().toString(36).slice(-8)
         const hashedPassword = await bcrypt.hash(generatePassword, 10)
-        const newUser = new User({ username: req.body.name.split(" ").join("").toLowerCase() + Math.random().toString(36).slice(-4), email: req.body.email, password: hashedPassword, avatar:req.body.photo })
+        const newUser = new User({ username: req.body.name.split(" ").join("").toLowerCase() + Math.random().toString(36).slice(-4), email: req.body.email, password: hashedPassword, avatar: req.body.avatar })
         await newUser.save()
-        const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET)
-            const { password: pass, ...userData } = user._doc
-            return res.cookie("access_token", token, { httpOnly: true }).status(200).send(userData)
+        console.log(newUser)
+        const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET)
+        const { password: pass, ...userData } = newUser._doc
+        return res.cookie("access_token", token, { httpOnly: true }).status(200).send({success:true,userData})
     } catch (error) {
         next(error)
     }

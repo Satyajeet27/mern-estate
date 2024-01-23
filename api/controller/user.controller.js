@@ -22,7 +22,7 @@ export const updateUser= async(req, res, next)=>{
             }
         },{new:true})
         const {password, ...userData}= updatedUser._doc
-        return res.status(200).send(userData)
+        return res.status(200).send({success:true,userData})
     } catch (error) {
         next(error)
     }
