@@ -42,6 +42,17 @@ export const signin = async (req, res, next) => {
 
 }
 
+export const signout= (req, res, next)=>{
+    try {
+        return res.clearCookie("access_token").status(200).send({
+            success:true,
+            message:"User has been logged out"
+        })
+    } catch (error) {
+        next(error)
+    }
+}
+
 export const google = async (req, res, next) => {
     try {
         const user = await User.findOne({ email: req.body.email })
