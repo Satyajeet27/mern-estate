@@ -15,7 +15,7 @@ const Search = () => {
     const navigate= useNavigate()
     const [loading, setLoading]= useState(false)
     const [listings, setListings]= useState([])
-    console.log(listings)
+    const [showMore, setShowMore]= useState(false)
     const handleChange= e=>{
         if(e.target.id==="all" || e.target.id==="rent" || e.target.id==="sale"){
             setSidebardata({...sidebardata, type:e.target.id})
@@ -57,6 +57,11 @@ const Search = () => {
             const searchQuery= urlParams.toString()
             const res= await fetch(`/api/listing/get?${searchQuery}`)
             const data= await res.json()
+            if(data.listings.length > 8){
+                setShowMore(true)
+            }else{
+                setShowMore(false)
+            }
             setListings(data.listings)
             setLoading(false)
         }
@@ -74,6 +79,19 @@ const Search = () => {
     urlParams.set('order', sidebardata.order)
     const searchQuery= urlParams.toString()
     navigate(`/search?${searchQuery}`)
+   }
+   const onShowMoreClick = async()=>{
+    const numberOfListings= listings.length
+    const startIndex= numberOfListings
+    const urlParams= new URLSearchParams(location.search)
+    urlParams.set('startIndex', startIndex)
+    const searchQuery= urlParams.toString()
+    const res= await fetch(`/api/listing/get?${searchQuery}`)
+    const data= await res.json()
+    if(data.listings.length <9){
+        setShowMore(false)
+    }
+    setListings([...listings, ...data.listings])
    }
   return (
     <div className="flex flex-col md:flex-row">
@@ -143,7 +161,13 @@ const Search = () => {
                         <ListingItem key={listing._id} listing={listing} />
                     )) 
                 }
+                
             </div>
+            {
+                    showMore && (
+                        <button className='text-center w-full text-green-700 hover:underline p-7' onClick={()=>onShowMoreClick()}>Show more</button>
+                    )
+                }
         </div>
     </div>
   )
