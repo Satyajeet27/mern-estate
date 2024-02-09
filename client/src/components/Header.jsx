@@ -24,7 +24,7 @@ const Header = () => {
     }
   },[location.search])
   return (
-    <header className="bg-slate-200 shadow-md">
+    <header className="bg-slate-200 shadow-md " >
       <div className="flex justify-between items-center max-w-6xl mx-auto p-3">
         <Link to="/">
           <h1 className="font-bold sm:text-xl flex flex-wrap">
@@ -32,11 +32,11 @@ const Header = () => {
             <span className="text-slate-700">Estate</span>
           </h1>
         </Link>
-        <form onSubmit={handleSubmit} className="bg-slate-100 p-2 rounded-lg flex items-center">
+        <form onSubmit={handleSubmit} className="border max-sm:absolute max-sm:top-16 max-sm:w-80 bg-slate-100 p-2 rounded-lg flex justify-between items-center">
           <input
             type="text"
             placeholder="Search..."
-            className="bg-transparent focus:outline-none w-24 sm:w-64"
+            className="bg-transparent focus:outline-none sm:w-64"
             value={searchTerm}
             onChange={e=>setSearchTerm(e.target.value)}
           />
@@ -44,7 +44,7 @@ const Header = () => {
             <FaSearch className="text-slate-600" />
           </button>
         </form>
-        <ul className="hidden sm:flex gap-4 font-semibold">
+        <ul className="flex gap-4 font-semibold text-slate-700">
           <NavLink to="/" className="hover:underline hover:underline-offset-4">Home</NavLink>
           <NavLink to={"/about"} className="hover:underline hover:underline-offset-4 ">About</NavLink>
         {
