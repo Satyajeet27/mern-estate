@@ -28,14 +28,14 @@ const SignIn = () => {
         body: JSON.stringify(formData),
       });
       const data = await res.json();
-      console.log(data);
+      // console.log(data);
       if (!data.success) {
         dispatch(signInFailure(data?.message))
         return;
       }
       dispatch(signInSuccess(data.userData))
       navigate("/");
-      console.log(data);
+      // console.log(data);
     } catch (error) {
       console.log(error)
       dispatch(signInFailure(error.message))
