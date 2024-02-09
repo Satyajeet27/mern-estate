@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import ListingItem from '../components/ListingItem'
 
 const Search = () => {
     const [sidebardata, setSidebardata]= useState({
@@ -86,15 +87,15 @@ const Search = () => {
                     <label htmlFor="" className='font-semibold'>Type:</label>
                     <div className="flex gap-2">
                         <input onChange={handleChange} checked={sidebardata.type==="all"} type="checkbox" id="all" className='w-5'/>
-                        <span>Rent & Sell</span>
+                        <span>Rent & sale</span>
                     </div>
                     <div className="flex gap-2">
                         <input onChange={handleChange} checked={sidebardata.type==="rent"} type="checkbox" id="rent" className='w-5'/>
                         <span>Rent</span>
                     </div>
                     <div className="flex gap-2">
-                        <input onChange={handleChange} checked={sidebardata.type==="sell"} type="checkbox" id="sell" className='w-5'/>
-                        <span>Sell</span>
+                        <input onChange={handleChange} checked={sidebardata.type==="sale"} type="checkbox" id="sale" className='w-5'/>
+                        <span>sale</span>
                     </div>
                     <div className="flex gap-2">
                         <input onChange={handleChange} checked={sidebardata.offer} type="checkbox" id="offer" className='w-5'/>
@@ -124,8 +125,25 @@ const Search = () => {
                 <button className='bg-slate-700 text-white p-3 rounded-lg uppercase hover:opacity-95'>Search</button>
             </form>
         </div>
-        <div className="">
+        <div className="flex-1">
             <h1 className='text-3xl font-semibold border-b p-3 rexr-slate-700 mt-5'>Listing results:</h1>
+            <div className="p-7 flex flex-col sm:flex-row flex-wrap gap-4">
+                {
+                    !loading && listings.length===0 && (
+                        <p className='text-xl text-slate-700'>No listing found!</p>
+                    )
+                }
+                {
+                    loading && (
+                        <p className='tex-xl text-slate-700 text-center w-full'>Loading...</p>
+                    )
+                }
+                {
+                    !loading && listings && listings.map(listing=>(
+                        <ListingItem key={listing._id} listing={listing} />
+                    )) 
+                }
+            </div>
         </div>
     </div>
   )
